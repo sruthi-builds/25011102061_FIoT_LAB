@@ -1,0 +1,35 @@
+# Keil uVision user-specific settings
+*.uvoptx
+*.uvguix*
+*.uvgui
+
+# Keil generated build files
+*.o
+*.d
+*.crf
+*.dep
+*.lnp
+*.map
+*.axf
+*.elf
+*.htm
+*.build_log.htm
+
+# Keil output directories
+Objects/
+Listings/
+Debug/
+Release/
+
+# Keep generated HEX firmware files tracked
+# (Do not add *.hex to the ignore list)
+
+# Temporary files
+*.bak
+*.tmp
+*.swp
+
+# Operating system files
+.DS_Store
+Thumbs.db
+desktop.ini
