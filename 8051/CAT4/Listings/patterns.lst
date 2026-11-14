@@ -1,0 +1,61 @@
+C51 COMPILER V9.60.7.0   PATTERNS                                                          08/06/2026 12:58:20 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE PATTERNS
+OBJECT MODULE PLACED IN .\Objects\patterns.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE patterns.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\
+                    -patterns.lst) TABS(2) OBJECT(.\Objects\patterns.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          #include "patterns.h"
+   3          #include "delay.h"
+   4          
+   5          void runningPattern()
+   6          {
+   7   1          P1 = 0x01;
+   8   1          delay();
+   9   1      
+  10   1          P1 = 0x02;
+  11   1          delay();
+  12   1      
+  13   1          P1 = 0x04;
+  14   1          delay();
+  15   1      
+  16   1          P1 = 0x08;
+  17   1          delay();
+  18   1      }
+  19          void binaryCounter(){
+  20   1        int i;
+  21   1        for(i=0;i<16;i++){
+  22   2          P1=i;
+  23   2          delay();
+  24   2        }
+  25   1      }
+  26          void alternatingPattern(){
+  27   1        P1=0x0A;
+  28   1        delay();
+  29   1        P1=0x05;
+  30   1        delay();
+  31   1      }
+  32          void flash(){
+  33   1        P1=0x0F;
+  34   1        delay();
+  35   1        P1=0x00;
+  36   1        delay();
+  37   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     79    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

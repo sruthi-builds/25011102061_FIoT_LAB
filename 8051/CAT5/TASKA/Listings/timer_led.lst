@@ -1,0 +1,63 @@
+C51 COMPILER V9.60.7.0   TIMER_LED                                                         09/11/2026 01:34:01 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TIMER_LED
+OBJECT MODULE PLACED IN .\Objects\timer_led.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE timer_led.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings
+                    -\timer_led.lst) TABS(2) OBJECT(.\Objects\timer_led.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          
+   3          sbit LED = P1^1;
+   4          
+   5          unsigned int ms_count = 0;
+   6          
+   7          void timer0_check(void)
+   8          {if(TF0==1){
+   9   2          TF0=0;
+  10   2          TH0 = 0xE6;
+  11   2          TL0 = 0xCD;
+  12   2      
+  13   2          ms_count++;
+  14   2      
+  15   2          if(ms_count >=86)
+  16   2          {
+  17   3              ms_count = 0;
+  18   3      
+  19   3              LED = ~LED;
+  20   3          }
+  21   2        }
+  22   1      }
+  23          
+  24          void main()
+  25          {
+  26   1      
+  27   1          TMOD = 0x01;
+  28   1      
+  29   1          TH0 = 0xE6;
+  30   1          TL0 = 0xCD;
+  31   1          TR0=1;
+  32   1      
+  33   1          while(1)
+  34   1          {
+  35   2      
+  36   2            timer0_check();
+  37   2      
+  38   2          }
+  39   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     52    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

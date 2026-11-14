@@ -1,0 +1,191 @@
+C51 COMPILER V9.60.7.0   MINI                                                              08/06/2026 12:58:20 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MINI
+OBJECT MODULE PLACED IN .\Objects\mini.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE mini.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\mini
+                    -.lst) TABS(2) OBJECT(.\Objects\mini.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          #include "delay.h"
+   3          sbit R1=P2^7;
+   4          sbit R2=P2^6;
+   5          sbit R3=P2^5;
+   6          sbit R4=P2^4;
+   7          sbit C1=P2^3;
+   8          sbit C2=P2^2;
+   9          sbit C3=P2^1;
+  10          sbit C4=P2^0;
+  11          unsigned char keypad_scan(){
+  12   1        R1=0;
+  13   1        R2=1;
+  14   1        R3=1;
+  15   1        R4=1;
+  16   1        if(C1==0){
+  17   2          while(C1==0);
+  18   2            return 0;
+  19   2        }
+  20   1        else if(C2==0){
+  21   2          while(C2==0);
+  22   2            return 1;
+  23   2        }
+  24   1        else if(C3==0){
+  25   2          while(C3==0);
+  26   2            return 2;
+  27   2        }
+  28   1        else if(C4==0){
+  29   2          while(C4==0);
+  30   2            return 3;
+  31   2        }
+  32   1        R1=1;
+  33   1        R2=0;
+  34   1        R3=1;
+  35   1        R4=1;
+  36   1          if(C1==0){
+  37   2          while(C1==0);
+  38   2            return 4;
+  39   2        }
+  40   1          else if(C2==0){
+  41   2          while(C2==0);
+  42   2            return 5;
+  43   2        }
+  44   1          else if(C3==0){
+  45   2          while(C3==0);
+  46   2            return 6;
+  47   2        }
+  48   1          else if(C4==0){
+  49   2          while(C4==0);
+  50   2            return 7;
+  51   2        }
+  52   1        R1=1;
+  53   1        R2=1;
+  54   1        R3=0;
+C51 COMPILER V9.60.7.0   MINI                                                              08/06/2026 12:58:20 PAGE 2   
+
+  55   1        R4=1;
+  56   1          if(C1==0){
+  57   2          while(C1==0);
+  58   2            return 8;
+  59   2        }
+  60   1          else if(C2==0){
+  61   2          while(C2==0);
+  62   2            return 9;
+  63   2        }
+  64   1          else if(C3==0){
+  65   2          while(C3==0);
+  66   2            return 10;
+  67   2        }
+  68   1          else if(C4==0){
+  69   2          while(C4==0);
+  70   2            return 11;
+  71   2        }
+  72   1        
+  73   1        R1=1;
+  74   1        R2=1;
+  75   1        R3=1;
+  76   1        R4=0;
+  77   1          if(C1==0){
+  78   2          while(C1==0);
+  79   2            return 12;
+  80   2        }
+  81   1          else if(C2==0){
+  82   2          while(C2==0);
+  83   2            return 13;
+  84   2        }
+  85   1          else if(C3==0){
+  86   2          while(C3==0);
+  87   2            return 14;
+  88   2        }
+  89   1          else if(C4==0){
+  90   2          while(C4==0);
+  91   2            return 15;
+  92   2        }
+  93   1          
+  94   1        
+  95   1      }
+  96          void display_digit(unsigned char digit)
+  97          {
+  98   1          switch(digit)
+  99   1          {
+ 100   2              case 0: P0 = 0x3F; break;
+ 101   2              case 1: P0 = 0x06; break;
+ 102   2              case 2: P0 = 0x5B; break;
+ 103   2              case 3: P0 = 0x4F; break;
+ 104   2              case 4: P0 = 0x66; break;
+ 105   2              case 5: P0 = 0x6D; break;
+ 106   2              case 6: P0 = 0x7D; break;
+ 107   2              case 7: P0 = 0x07; break;
+ 108   2              case 8: P0 = 0x7F; break;
+ 109   2              case 9: P0 = 0x6F; break;
+ 110   2              case 10: P0 = 0x77; break;
+ 111   2              case 11: P0 = 0x7C; break;
+ 112   2              case 12: P0 = 0x39; break;
+ 113   2              case 13: P0 = 0x5E; break;
+ 114   2              case 14: P0 = 0x79; break;
+ 115   2              case 15: P0 = 0x71; break;
+ 116   2      
+C51 COMPILER V9.60.7.0   MINI                                                              08/06/2026 12:58:20 PAGE 3   
+
+ 117   2              default:
+ 118   2                  P0 = 0x00;
+ 119   2                  break;
+ 120   2          }
+ 121   1      }
+ 122          void led_control(unsigned char key){
+ 123   1        switch(key){
+ 124   2          case 0:P1=0x01;break;
+ 125   2          case 1:P1=0x02;break;
+ 126   2          case 2:P1=0x04;break;
+ 127   2          case 3:P1=0x08;break;
+ 128   2          case 4:
+ 129   2            runningPattern();
+*** WARNING C206 IN LINE 129 OF mini.c: 'runningPattern': missing function-prototype
+ 130   2          break;
+ 131   2          case 5:
+ 132   2            alternatingPattern();
+*** WARNING C206 IN LINE 132 OF mini.c: 'alternatingPattern': missing function-prototype
+ 133   2          break;
+ 134   2          case 6:
+ 135   2            binaryCounter();
+*** WARNING C206 IN LINE 135 OF mini.c: 'binaryCounter': missing function-prototype
+ 136   2          break;
+ 137   2          case 7:flash();
+*** WARNING C206 IN LINE 137 OF mini.c: 'flash': missing function-prototype
+ 138   2          break;
+ 139   2          case 8:P1=0x00;break;
+ 140   2          default:
+ 141   2            P1=0x00;
+ 142   2            break;
+ 143   2        }
+ 144   1      }
+ 145              
+ 146          void main()
+ 147          {
+ 148   1          unsigned char key;
+ 149   1      
+ 150   1          while(1)
+ 151   1          {
+ 152   2              key = keypad_scan();
+ 153   2      
+ 154   2                  display_digit(key);
+ 155   2                  led_control(key);
+ 156   2          }
+ 157   1      }
+ 158              
+*** WARNING C291 IN LINE 95 OF mini.c: not every exit path returns a value
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    394    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  5 WARNING(S),  0 ERROR(S)

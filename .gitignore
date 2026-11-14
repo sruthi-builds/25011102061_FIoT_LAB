@@ -1,10 +1,18 @@
-# Keil uVision user-specific settings
-*.uvoptx
-*.uvguix*
-*.uvgui
 
+# ==========================================
+# Keil uVision user-specific settings
+# ==========================================
+*.uvopt
+*.uvoptx
+*.uvgui
+*.uvguix*
+*.uvguix.*
+
+# ==========================================
 # Keil generated build files
+# ==========================================
 *.o
+*.obj
 *.d
 *.crf
 *.dep
@@ -14,22 +22,37 @@
 *.elf
 *.htm
 *.build_log.htm
+*. bak
 
-# Keil output directories
-Objects/
-Listings/
-Debug/
-Release/
+# ==========================================
+# Ignore generated output folders by default
+# ==========================================
+**/Objects/*
+**/Listings/*
+**/Debug/*
+**/Release/*
 
-# Keep generated HEX firmware files tracked
-# (Do not add *.hex to the ignore list)
+# ==========================================
+# Keep required firmware and listing outputs
+# ==========================================
+!**/Objects/
+!**/Listings/
+!**/Objects/*.hex
+!**/Objects/*.HEX
+!**/Listings/*.lst
+!**/Listings/*.LST
 
+# ==========================================
 # Temporary files
+# ==========================================
 *.bak
 *.tmp
 *.swp
+*.log
 
+# ==========================================
 # Operating system files
+# ==========================================
 .DS_Store
 Thumbs.db
 desktop.ini
