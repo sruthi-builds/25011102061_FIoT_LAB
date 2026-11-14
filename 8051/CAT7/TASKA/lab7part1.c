@@ -1,0 +1,100 @@
+#include <reg51.h>
+
+#define LCD_PORT P3
+
+sbit RS = P3^2;
+sbit E  = P3^3;
+
+void delay_ms(unsigned int ms)
+{
+    unsigned int i, j;
+
+    for(i = 0; i < ms; i++)
+    {
+        for(j = 0; j < 1275; j++);
+    }
+}
+
+void lcd_enable()
+{
+    E = 1;
+    delay_ms(1);
+    E = 0;
+}
+
+void lcd_send_nibble(unsigned char nibble)
+{
+    LCD_PORT = (LCD_PORT & 0x0F) | (nibble & 0xF0);
+    lcd_enable();
+}
+
+void lcd_cmd(unsigned char cmd)
+{
+    RS = 0;
+
+    lcd_send_nibble(cmd);
+    lcd_send_nibble(cmd << 4);
+
+    delay_ms(2);
+}
+
+void lcd_data(unsigned char dat)
+{
+    RS = 1;
+
+    lcd_send_nibble(dat);
+    lcd_send_nibble(dat << 4);
+
+    delay_ms(1);
+}
+
+void lcd_string(char *str)
+{
+    while(*str)
+    {
+        lcd_data(*str);
+        str++;
+    }
+}
+
+void lcd_init()
+{
+    RS = 0;
+    E = 0;
+
+    delay_ms(20);
+
+    lcd_send_nibble(0x30);
+    delay_ms(5);
+
+    lcd_send_nibble(0x30);
+    delay_ms(1);
+
+    lcd_send_nibble(0x30);
+    delay_ms(1);
+
+    lcd_send_nibble(0x20);
+
+    lcd_cmd(0x28);  
+    lcd_cmd(0x0F);  
+    lcd_cmd(0x06);  
+    lcd_cmd(0x01);  
+
+    delay_ms(2);
+}
+
+void main()
+{
+    lcd_init();
+
+    
+    lcd_string("FOUNDATIONS IoT");
+
+   
+    lcd_cmd(0xC0);
+
+   
+    lcd_string("LCD Interface");
+
+    while(1);
+}
