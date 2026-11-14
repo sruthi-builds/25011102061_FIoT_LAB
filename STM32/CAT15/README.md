@@ -74,6 +74,20 @@ The sensor readings are formatted into a JSON message:
 | Session | Clean Session |
 | Publishing Interval | 2 seconds |
 
+
+## Node-RED Flow
+
+The Node-RED flow receives the sensor data published by the STM32 through the MQTT broker and processes the readings for dashboard visualization.
+
+![Node-RED Flow](nodered-flow.jpeg)
+
+## Final Dashboard
+
+The final dashboard displays the sensor readings, including temperature, pressure and humidity, in a visual format for monitoring.
+
+![Final Dashboard](dashboard.jpeg)
+
+
 ## Functions Used
 
 - `bme280_init()` – Initializes the BME280 sensor.
