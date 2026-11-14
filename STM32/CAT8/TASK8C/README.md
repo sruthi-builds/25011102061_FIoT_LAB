@@ -1,64 +1,68 @@
-# CAT 8 – STM32 GPIO Bring-Up and Switch-Controlled LED
+# CAT 8 – GPIO Input/Output
 
-## EXP
-CAT 8 – TASK 8C
+**EXP CAT:** CAT 8  
+**TASK:** TASK 8C  
+**NAME:** Short Press and Long Press Detection
 
-## DATE
-18/09/2026
+## Objective
+To distinguish between short and long button presses and control the onboard LED accordingly, using non-blocking long-press detection.
 
-## NAME OF EXP
-GPIO Input/Output
+## Hardware and Software Requirements
+- STM32F103C8T6 Blue Pill
+- Push button
+- STM32CubeMX
+- Keil uVision
 
-## HARDWARE SETUP / PLATFORM
-- Development Board: STM32F103C8T6 Blue Pill
-- Microcontroller: STM32F103C8T6
-- Push Button: PA3
-- Onboard LED: PC13
-- Software: STM32CubeMX and Keil MDK-ARM
+## Pin Connections
 
-## TASK NO
-Task 8C
-
-Interface a push-button with the STM32 to control the onboard LED using short-press and long-press detection.
+| Component | STM32 Pin | Configuration |
+|---|---|---|
+| Push Button | PA3 | Input, active LOW, internal pull-up |
+| Onboard LED | PC13 | Output, active LOW |
 
 ## Circuit Diagram
 
 ![Circuit Diagram](circuit.png)
 
-### Pin Connections
-- PA3 – Push-button input with internal pull-up.
-- PC13 – Onboard LED output (active-low).
+## Working Principle
+- PA3 is configured as a GPIO input with an internal pull-up.
+- PC13 is configured as a GPIO output to control the onboard LED.
+- A 20 ms debounce interval is used to identify stable button states.
+- A short press (less than 1 second) toggles the LED.
+- A long press (1 second or more) activates blinking mode.
+- In blinking mode, the LED toggles every 500 ms without using blocking delays.
+- Blinking continues after the button is released.
+- A subsequent short press stops blinking and turns the LED OFF.
 
-## Core Logic / Pseudocode / Code Base
-
+## Algorithm
 1. Initialize the HAL library.
 2. Configure the system clock.
-3. Initialize GPIO pins PA3 and PC13.
-4. Configure PA3 as input with an internal pull-up.
-5. Configure PC13 as output push-pull.
-6. Continuously monitor the push-button state.
-7. When the button is pressed, apply a 20 ms debounce delay.
-8. Record the button press start time.
-9. Wait until the button is released.
-10. Calculate the press duration.
-11. If the press duration is less than 1000 ms:
-    - If blinking is active, stop blinking and turn OFF the LED.
-    - Otherwise, toggle the LED.
-12. If the press duration is 1000 ms or more, enable blinking mode.
-13. Toggle the LED every 500 ms while blinking mode is active.
+3. Initialize PA3 as input with pull-up.
+4. Initialize PC13 as output.
+5. Read the button state continuously.
+6. Apply 20 ms debounce to detect stable button states.
+7. Record the time when the button is pressed.
+8. If the button is held for 1 second or more, activate blinking mode.
+9. If the button is released before 1 second, toggle the LED.
+10. In blinking mode, toggle the LED every 500 ms.
+11. If a short press occurs during blinking mode, stop blinking and turn the LED OFF.
+12. Repeat continuously.
 
-### HAL Functions Used
+## HAL Functions Used
 - `HAL_Init()`
 - `HAL_GPIO_ReadPin()`
 - `HAL_GPIO_WritePin()`
 - `HAL_GPIO_TogglePin()`
-- `HAL_Delay()`
 - `HAL_GetTick()`
 - `HAL_RCC_OscConfig()`
 - `HAL_RCC_ClockConfig()`
+- `HAL_GPIO_Init()`
 
-**Source File:** `Core/Src/main.c`
+## Source Code
+`Core/Src/main.c`
 
-## INFERENCE
+## Result
+The onboard LED toggles for a short press and enters blinking mode for a long press. Blinking is implemented using non-blocking time checks.
 
-Successfully interfaced a push-button with the STM32F103C8T6 Blue Pill. Short presses toggle the LED state, while a long press activates blinking mode with a 500 ms interval. A subsequent short press stops blinking and turns OFF the LED.
+## Inference
+This experiment demonstrates short-press and long-press detection, software debouncing, and non-blocking LED control using the STM32 microcontroller.

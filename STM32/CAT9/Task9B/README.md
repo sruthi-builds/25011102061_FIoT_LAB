@@ -1,95 +1,94 @@
-# EXPERIMENT DETAILS
+# CAT 9 – UART Communication
 
-**EXP:** CONTINUOUS ASSESSMENT 9
+**EXP CAT:** CAT 9  
+**TASK:** TASK 9B  
+**NAME:** UART-Based LED Control Using Commands
 
-**NAME OF EXP:** String Based Application Logic
+## Objective
+To control the onboard LED of the STM32F103C8T6 microcontroller using commands received through UART communication.
 
-**HARDWARE SETUP / PLATFORM:** STM32CubeMX + Keil MDK + STM32 Development Board Blue Pill STM32F103C8T6
+## Hardware and Software Requirements
+- STM32F103C8T6 Blue Pill
+- USB-TTL converter
+- STM32CubeMX
+- Keil uVision
+- Serial terminal software
 
----
+## Pin Connections
 
-## TASK 9B – UART Command Interface for LED Control
+| USB-TTL | STM32F103C8T6 |
+|---|---|
+| TX | PA10 (USART1_RX) |
+| RX | PA9 (USART1_TX) |
+| GND | GND |
 
-### 1. Circuit Diagram
+| Onboard Component | STM32 Pin |
+|---|---|
+| LED | PC13 |
 
-The experiment uses the onboard LED of the STM32 Blue Pill development board and USART1 for serial communication.
+## Circuit Diagram
 
-**Hardware Components:**
-- **Development Board:** STM32 Blue Pill
-- **Microcontroller IC:** STM32F103C8T6
-- **GPIO Pin:** PC13
-- **UART Peripheral:** USART1
-- **TX Pin:** PA9 (USART1_TX)
-- **RX Pin:** PA10 (USART1_RX)
-- **Peripheral:** Onboard LED
-- **Communication Interface:** USB-to-TTL Serial Converter
+![Circuit Diagram](circuit.png)
 
-**Connections:**
-- STM32 PA9 (TX) → USB-to-TTL RX
-- STM32 PA10 (RX) → USB-to-TTL TX
-- STM32 GND → USB-to-TTL GND
+## UART Configuration
 
-**UART Configuration:**
-- Baud Rate: 9600
-- Word Length: 8 Bits
-- Stop Bits: 1
-- Parity: None
-- Mode: Transmitter and Receiver
+| Parameter | Configuration |
+|---|---|
+| UART Peripheral | USART1 |
+| Baud Rate | 9600 |
+| Word Length | 8 Bits |
+| Stop Bits | 1 |
+| Parity | None |
+| Mode | Transmitter and Receiver |
+| Hardware Flow Control | None |
 
-### 2. Core Logic / Pseudocode / Code Base
+## Working Principle
+- USART1 is initialized for serial communication at 9600 baud.
+- The program displays a command prompt in the serial terminal.
+- It receives commands from the user through UART.
+- Based on the received command, the onboard LED connected to PC13 is controlled.
+- LED control is performed using GPIO operations.
+- The LED can also be made to toggle continuously at 500 ms intervals.
 
-**Working Principle:**
+## Supported Commands
 
-The experiment demonstrates LED control using UART serial commands and the STM32 HAL library.
+| Command | Function |
+|---|---|
+| `LED ON` | Turns the onboard LED ON |
+| `LED OFF` | Turns the onboard LED OFF |
+| `LED TOGGLE` | Continuously toggles the LED every 500 ms |
 
-USART1 is configured for serial communication at a baud rate of 9600. The microcontroller receives commands from the Serial Monitor, stores the received characters in a command buffer, and checks the entered command when the user presses Enter.
+The program displays a response for valid commands and an error message for invalid commands.
 
-Three commands are supported:
-
-- **LED ON:** Turns ON the onboard LED by setting PC13 to GPIO_PIN_RESET.
-- **LED OFF:** Turns OFF the onboard LED by setting PC13 to GPIO_PIN_SET.
-- **LED TOGGLE:** Continuously toggles the onboard LED at intervals of 500 milliseconds.
-
-The program also displays the entered characters (echo), provides responses for valid commands, and displays an error message for invalid commands.
-
-**Pseudocode:**
-
+## Algorithm
 1. Initialize the HAL library.
 2. Configure the system clock.
-3. Configure GPIO pin PC13 as output.
-4. Initialize USART1 with a baud rate of 9600.
-5. Set the onboard LED to its initial OFF state.
-6. Display the UART Command Interface message on the Serial Monitor.
-7. Continuously check for incoming UART characters.
-8. Store received characters in a command buffer and display them back (echo).
-9. When Enter is pressed, compare the received command:
-   - If the command is "LED ON", turn ON the LED.
-   - If the command is "LED OFF", turn OFF the LED.
-   - If the command is "LED TOGGLE", enable continuous LED toggling.
-   - Otherwise, display "Invalid command".
-10. In toggle mode, toggle the LED every 500 milliseconds.
-11. Display the command prompt again.
-12. Repeat the process continuously.
+3. Initialize GPIO and USART1.
+4. Set the onboard LED to OFF initially.
+5. Display the UART command interface.
+6. Receive characters from the serial terminal.
+7. Store the received characters until Enter is pressed.
+8. Compare the received command with the supported commands.
+9. Execute the corresponding LED operation.
+10. Display the response and command prompt.
+11. Repeat continuously.
 
-**Code Base:**
+## HAL Functions Used
+- `HAL_Init()`
+- `HAL_UART_Init()`
+- `HAL_UART_Receive()`
+- `HAL_UART_Transmit()`
+- `HAL_GPIO_WritePin()`
+- `HAL_GPIO_TogglePin()`
+- `HAL_GetTick()`
+- `HAL_RCC_OscConfig()`
+- `HAL_RCC_ClockConfig()`
 
-The UART communication and GPIO operations are performed using the following STM32 HAL functions and C library functions:
+## Source Code
+`Core/Src/main.c`
 
-- `HAL_Init()` – Initializes the HAL library.
-- `HAL_UART_Init()` – Initializes the USART1 peripheral.
-- `HAL_UART_Receive()` – Receives characters through UART.
-- `HAL_UART_Transmit()` – Transmits messages and echoes received characters.
-- `HAL_GPIO_WritePin()` – Sets or resets the GPIO output pin.
-- `HAL_GPIO_TogglePin()` – Toggles the LED state.
-- `HAL_GetTick()` – Returns the system tick count in milliseconds.
-- `HAL_Delay()` – Introduces a delay.
-- `strcmp()` – Compares the entered command with predefined strings.
-- `strlen()` – Calculates the length of a string.
+## Result
+The onboard LED can be controlled through UART commands. The LED can be turned ON, turned OFF, or made to toggle continuously by sending the corresponding commands through the serial terminal.
 
-The `toggle_mode` variable controls whether continuous LED toggling is enabled. The `last_toggle` variable stores the previous toggle time to generate a 500 ms interval without blocking UART communication.
-
-### 3. Inference
-
-The STM32 Blue Pill successfully receives and processes UART commands to control the onboard LED.
-
-The LED can be switched ON, switched OFF, or made to blink continuously using the commands entered through the Serial Monitor. This experiment demonstrates UART-based command processing, GPIO output control, string comparison, and non-blocking time-based LED toggling using the STM32 HAL library.
+## Inference
+This experiment demonstrates UART-based command processing and GPIO control using serial communication with the STM32 microcontroller.

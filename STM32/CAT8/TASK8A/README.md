@@ -1,54 +1,59 @@
-# CAT 8 – STM32 GPIO Bring-Up and Switch-Controlled LED
+# CAT 8 – GPIO Input/Output
 
-## EXP
-CAT 8 – TASK 8A
+**EXP CAT:** CAT 8  
+**TASK:** TASK 8A  
+**NAME:** GPIO Input/Output
 
-## DATE
-18/09/2026
+## Objective
+To interface a push button and an LED with the STM32F103C8T6 microcontroller and control the LED based on the button input.
 
-## NAME OF EXP
-GPIO Input/Output
+## Hardware and Software Requirements
+- STM32F103C8T6 Blue Pill
+- Push button
+- LED
+- STM32CubeMX
+- Keil uVision
 
-## HARDWARE SETUP / PLATFORM
-- Development Board: STM32F103C8T6 Blue Pill
-- Microcontroller: STM32F103C8T6
-- Push Button: PA9
-- LED: PA4
-- Software: STM32CubeMX and Keil MDK-ARM
+## Pin Connections
 
-## TASK NO
-Task 8A
-
-Interface a push-button and LED with the STM32. Configure the corresponding GPIO pins and develop firmware so that the LED follows the switch state.
+| Component | STM32 Pin | Configuration |
+|---|---|---|
+| Push Button | PA9 | Input, active LOW, internal pull-up |
+| LED | PA4 | Output, active HIGH |
 
 ## Circuit Diagram
 
 ![Circuit Diagram](circuit.png)
 
-### Pin Connections
-- PA9 – Push-button input (internal pull-up enabled).
-- PA4 – LED output.
+## Working Principle
+- PA9 is configured as a GPIO input with an internal pull-up.
+- When the button is not pressed, PA9 reads HIGH.
+- When the button is pressed, PA9 reads LOW.
+- PA4 is configured as a GPIO output.
+- The LED turns ON when the button is pressed and turns OFF when the button is released.
 
-## Core Logic / Pseudocode / Code Base
-
+## Algorithm
 1. Initialize the HAL library.
 2. Configure the system clock.
-3. Initialize GPIO pins PA9 and PA4.
-4. Configure PA9 as input with an internal pull-up resistor.
-5. Configure PA4 as output push-pull.
-6. Continuously read the push-button state.
-7. If the button is pressed (`GPIO_PIN_RESET`), turn ON the LED.
-8. Otherwise, turn OFF the LED.
+3. Initialize GPIO pins.
+4. Read the button state from PA9.
+5. If PA9 is LOW, set PA4 HIGH.
+6. Otherwise, set PA4 LOW.
+7. Repeat continuously.
 
-### HAL Functions Used
+## HAL Functions Used
 - `HAL_Init()`
 - `HAL_GPIO_ReadPin()`
 - `HAL_GPIO_WritePin()`
 - `HAL_RCC_OscConfig()`
 - `HAL_RCC_ClockConfig()`
+- `HAL_GPIO_Init()`
 
-**Source File:** `Core/Src/main.c`
+## Source Code
+`Core/Src/main.c`
 
-## INFERENCE
+## Result
+The LED is controlled according to the push-button state. It turns ON when the button is pressed and turns OFF when the button is released.
 
-Successfully interfaced a push-button and LED with the STM32F103C8T6 Blue Pill using GPIO. The LED turns ON when the push-button is pressed and turns OFF when it is released.
+## Inference
+This experiment demonstrates basic GPIO input and output operations using the STM32 microcontroller.

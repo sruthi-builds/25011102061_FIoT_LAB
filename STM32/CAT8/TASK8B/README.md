@@ -1,58 +1,64 @@
-# CAT 8 – STM32 GPIO Bring-Up and Switch-Controlled LED
+# CAT 8 – GPIO Input/Output
 
-## EXP
-CAT 8 – TASK 8B
+**EXP CAT:** CAT 8  
+**TASK:** TASK 8B  
+**NAME:** Event-Based LED Control
 
-## DATE
-18/09/2026
+## Objective
+To control the onboard LED using a push button and implement event-based toggling with debouncing.
 
-## NAME OF EXP
-GPIO Input/Output
+## Hardware and Software Requirements
+- STM32F103C8T6 Blue Pill
+- Push button
+- STM32CubeMX
+- Keil uVision
 
-## HARDWARE SETUP / PLATFORM
-- Development Board: STM32F103C8T6 Blue Pill
-- Microcontroller: STM32F103C8T6
-- Push Button: PA3
-- Onboard LED: PC13
-- Software: STM32CubeMX and Keil MDK-ARM
+## Pin Connections
 
-## TASK NO
-Task 8B
-
-Interface a push-button with the STM32 and control the onboard LED using a debounced button press. Each press toggles the LED state.
+| Component | STM32 Pin | Configuration |
+|---|---|---|
+| Push Button | PA3 | Input, active LOW, internal pull-up |
+| Onboard LED | PC13 | Output, active LOW |
 
 ## Circuit Diagram
 
 ![Circuit Diagram](circuit.png)
 
-### Pin Connections
-- PA3 – Push-button input with internal pull-up.
-- PC13 – Onboard LED output (active-low).
+## Working Principle
+- PA3 is configured as a GPIO input with an internal pull-up.
+- When the button is pressed, PA3 reads LOW.
+- A 20 ms delay is used to debounce the button.
+- The button state is checked again to confirm a valid press.
+- The onboard LED connected to PC13 toggles its state once for every valid button press.
+- The program waits until the button is released before detecting another press.
 
-## Core Logic / Pseudocode / Code Base
-
+## Algorithm
 1. Initialize the HAL library.
 2. Configure the system clock.
-3. Initialize GPIO pins PA3 and PC13.
-4. Configure PA3 as input with an internal pull-up.
-5. Configure PC13 as output push-pull.
-6. Continuously monitor the push-button state.
-7. When the button is pressed, wait 20 ms for debouncing.
-8. Check the button state again to confirm the press.
-9. Toggle the LED state.
-10. Wait until the button is released before detecting another press.
+3. Initialize PA3 as input with pull-up.
+4. Initialize PC13 as output.
+5. Continuously read the button state.
+6. If the button is pressed, wait for 20 ms.
+7. Check the button state again.
+8. If the press is valid, toggle the LED.
+9. Wait until the button is released.
+10. Repeat continuously.
 
-### HAL Functions Used
+## HAL Functions Used
 - `HAL_Init()`
 - `HAL_GPIO_ReadPin()`
+- `HAL_GPIO_WritePin()`
 - `HAL_GPIO_TogglePin()`
 - `HAL_Delay()`
-- `HAL_GPIO_Init()`
 - `HAL_RCC_OscConfig()`
 - `HAL_RCC_ClockConfig()`
+- `HAL_GPIO_Init()`
 
-**Source File:** `Core/Src/main.c`
+## Source Code
+`Core/Src/main.c`
 
-## INFERENCE
+## Result
+The onboard LED toggles once for every valid button press. Debouncing prevents unwanted multiple toggles caused by button bouncing.
 
-Successfully interfaced a push-button with the STM32F103C8T6 Blue Pill. The onboard LED toggles its state with every valid button press. A 20 ms delay is used to reduce the effect of switch bouncing.
+## Inference
+This experiment demonstrates event-based GPIO control and basic software debouncing using the STM32 microcontroller.
